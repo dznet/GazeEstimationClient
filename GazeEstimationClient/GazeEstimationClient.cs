@@ -21,6 +21,20 @@ namespace GazeEstimationClient
 
         public Queue<string> ResponseString;
 
+        public GazeEstimationClient()
+        {
+            if (_address == null || _port == null)
+                throw new Exception("Server address or port  is unknown");
+
+            IPAddress host = IPAddress.Parse(_address);
+            int port = 0;
+            if (!int.TryParse(_port, out port) || port == 0)
+                throw new Exception("Server port  is wrong");
+
+            _ipEndPoint = new IPEndPoint(host, port);
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+
         private void SendData(byte[] data)
         {
             try
